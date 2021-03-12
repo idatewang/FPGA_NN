@@ -1,5 +1,6 @@
 import numpy as np
 
+
 # Create a neural net
 def create_neural_net(layer_array, input_dims):
     weights = []
@@ -13,9 +14,9 @@ def create_neural_net(layer_array, input_dims):
         if i == 0:
             last_layer_node_number = input_dims
         else:
-            last_layer_node_number = layer_array[i-1][0]
+            last_layer_node_number = layer_array[i - 1][0]
 
-        for n in range(0,node_num):
+        for n in range(0, node_num):
             weights_of_node = []
             for l in range(0, last_layer_node_number):
                 weights_of_node.append(1)
@@ -27,18 +28,22 @@ def create_neural_net(layer_array, input_dims):
         activations.append(layer_array[i][1])
     return [weights, biases, activations]
 
+
 # Activations
 def sigmoid(x):
     return 1 / (1 + np.exp(-x))
 
+
 def sigmoid_deriv(x):
     return x * (1 - x)
+
 
 def relu(x):
     if x < 0:
         return 0
     else:
         return x
+
 
 # prediction
 def predict_ratio(data, neural_net):
@@ -62,6 +67,7 @@ def predict_ratio(data, neural_net):
             print('activation function', activations[l], 'cannot be found. Sigmoid is used')
     return data
 
+
 def predict(data, neural_net):
     data = predict_ratio(data, neural_net)
 
@@ -79,6 +85,7 @@ def predict(data, neural_net):
             highest_class_probability = data[i]
 
     return highest_class, highest_class_probability
+
 
 # Training
 def train_network(X, Y, labels, neural_net, epochs=1000):
@@ -101,3 +108,17 @@ def train_network(X, Y, labels, neural_net, epochs=1000):
                 adjustment = np.dot(X[d], adjust_deriv[k])
                 neural_net[0][0][k] += adjustment
     return neural_net
+
+
+if __name__ == '__main__':
+    X = [[1, 1, 0, 0, 1, 1, 1, 1], [1, 1, 0, 0, 0, 1, 1, 1], [1, 0, 0, 0, 1, 1, 1, 1], [0, 1, 1, 1, 0, 0, 0, 1], [0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 1, 1, 0, 0, 0]]
+    Y = [1, 1, 1, 0, 0, 0]
+    labels = [0, 1]
+    layer_array = [[len(labels), 'sigmoid']]
+    input_dims = 8
+    neural_net = create_neural_net(layer_array, input_dims)
+
+    print('weights:', neural_net[0], '\nbiases:', neural_net[1], '\nactivations:', neural_net[2])
+    neural_net = train_network(X, Y, labels, neural_net, epochs=1000)
+    for i in range(len(X)):
+        print(predict(X[i], neural_net))
