@@ -13,16 +13,23 @@ module main;
   // main()
 	initial begin
     for (i=0; i<=3; i++) begin
-      sigmoid_deriv(i,j); // demonstrating task in for loop
+      sigmoid_deriv_task(i,j); // Demonstrating task in for loop
       $display(j);
     end
 
+    for (i=0; i<=3; i++) begin
+      j = sigmoid_deriv_func(i); // Demonstrating function in for loop
+      $display(j);
+    end
 
 		for (i=0; i<=3; i++) begin
-      for (j=0; j<=3; j++) begin
+      for (j=0; j<=3; j++) begin // Creating 4D array
         b[i][j] = i*j;
       end
     end
+
+    j = 2
+    i = sigmoid(j)
 
     for (i=0; i<=3; i++) begin
    		for (j=0; j<=3; j++) begin
